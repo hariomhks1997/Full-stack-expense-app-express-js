@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        .container {
+            background-color: aqua;
+            text-align: center;
+            margin-top: 10px;
+           width:50vw;
+            border-radius: 40px;
+            border-style: double;
+            height: fit-content;
+            padding: 0.5vw;
+        }
+        
+
+       header{
+        text-align: center;
+        background-color:beige;
+        font-size: 2vw;
+       }
+       span{
+        font-size: 5vw;
+        font-weight: bold;
+       }
+
+        body {
+            background-color: lightgreen;
+        }
+
+        li {
+            background-color: violet;
+            width: fit-content;
+            color: black;
+            font-size: medium;
+        }
+
+        .card {
+            background-color:  lightgreen;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 20px;
+            height: 10vh;
+            border:none
+        }
+       
+        
+    </style>
+</head>
+<body>
+    
+        <header>
+            <span>Booking Appointment App</span>
+        </header>
+   
+    <div class="container">
+    <form id="addForm"  method="POST" action="/add-user" " >
+        <laber>UserName</laber><br>
+        <input type="text" id="usernametag" Name="username" placeholder="username" class="form-control-sm" style="width:40vw;border-width: 2px;;" required></input><br>
+        <label>Mobile No</label><br>
+        <input type="tel" id="producttag" Name="mobileno" placeholder="mobile" class="form-control-sm" style="width:40vw;border-width: 2px;" required></input><br>
+        <label>Email</label><br>
+        <input type="email" name="email" id="emailtag"placeholder="email" class="form-control-sm" style="width:40vw;border-width: 2px;" required></input><br>
+        
+        <button type="submit" style="margin-top: 1rem ;">Submit</button>
+        <input type="text" id="id1" Name="edit" style="display: none;"></input><br>
+        </form>
+    </div>
+    <div id="input">
+        <div style="text-align: center;margin-top: 1vw;">
+        <h4 class="title" style="background-color: chartreuse;">Your Appointment Scheduled</h4>
+    </div>
+        <div style="text-align: center;border-width: 10px;border-color: black;border-radius: 1px;">
+            
+            <ol id="list" style="overflow: scroll;max-height: 8rem;background-color: beige;"></ol>
+        </div>
+        
+    </div>
+        
+   
+   
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+window.addEventListener("DOMContentLoaded",()=>{
+  axios.get("http://localhost:3000/add-user")
+  .then((response)=>{
+    for(var i = 0; i<response.data.length;i++){
+      
+      showOutput(response.data[i]);
+    }
+  }).catch((error)=>console.log(error))
+})
+
+
+function showOutput(data){
+
+    const ol=document.getElementById("list");
+    const form1=document.createElement("form");
+   
+    const form2=document.createElement("form");
+    form2.setAttribute("action",`/deleteuser/${data.id}`)
+    form2.setAttribute("method","POST")
+    const ul=document.createElement("ul")
+    ul.style.width="200vw"
+    const li=document.createElement("li")
+    const span=document.createElement("span")
+    const button1=document.createElement("button")
+    button1.type="submit";
+    button1.style.padding="1vw"
+   
+    button1.style.fontSize="2vw"
+    button1.append(document.createTextNode("Edit"))
+    const button2=document.createElement("button")
+    button2.type="submit";
+    button2.style.padding="1vw"
+    button2.style.fontSize="2vw"
+    button2.append(document.createTextNode("Delete"))
+    span.style.padding="1vw"
+    span.style.fontSize="2vw"
+    span.style.fontWeight="bold"
+    span.append(document.createTextNode(data.username+" "+data.email+" "+data.mobile))
+    li.style.fontSize="0.1vw"
+    li.style.display="flex"
+    li.style.textAlign="center"
+    li.style.marginTop="1rem"
+    li.style.marginBottom="1rem"
+   
+    
+    
+    li.append(span)
+   
+    li.appendChild(form1)
+    li.appendChild(form2)
+    form1.style.fontSize="1vw"
+    form2.style.fontSize="1vw"
+    form1.style.display="flex"
+    form1.style.textAlign="center"
+    form2.style.display="flex"
+    form2.style.textAlign="center"
+    form1.appendChild(button1)
+    form2.appendChild(button2)
+    
+     ol.appendChild(li)
+    
+     
+    console.log(ol)
+
+  button1.onclick =(event)=> {
+    event.preventDefault()
+    document.getElementById('usernametag').value =data.username
+            document.getElementById('emailtag').value=data.email
+             document.getElementById('producttag').value=data.mobile
+             document.getElementById('id1').value=data.id
+            
+                
+            }
+}
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

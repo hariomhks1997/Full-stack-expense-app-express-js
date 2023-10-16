@@ -10,13 +10,13 @@ exports.getinput=(req,res,next)=>{
       // console.log(products)
      fs.writeFileSync("usernametxt",`${JSON.stringify(products)}`)
       
-
+    
      next()
 
    
 
     })
-    .catch(err => console.log(err));
+    .catch(err => res.status(404).json({err:err}));
     res.sendFile(path.join(rootDir, 'views', 'index.html'));
     
 
@@ -49,7 +49,7 @@ exports.postinput=(req,res,next)=>{
 
     })
     .catch(err => {
-      console.log(err);
+      res.status(404).json({err:err})
     });
 }else{
     Product.findByPk(edit)
@@ -65,7 +65,9 @@ exports.postinput=(req,res,next)=>{
 
       res.redirect('/');
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+    res.status(404).json({err:err})
+    );
 }
 
 }
@@ -94,5 +96,7 @@ exports.postDeleteProduct =(req, res, next) => {
         return user.destroy();
    }).then(result => {
         res.redirect("/")
-   }).catch(err => console.log(err));
+   }).catch(err => 
+    res.status(404).json({err:err})
+    );
   };
